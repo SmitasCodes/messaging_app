@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
+import { authServices } from "../../services/auth";
 
 function Copyright(props) {
   return (
@@ -24,7 +25,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="#">
-      Messaging App
+        Messaging App
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -37,10 +38,10 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    await authServices.signInService({
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -109,9 +110,9 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  <RouterLink to="/signup">{"Don't have an account? Sign Up"}</RouterLink>
-                </Link>
+                <RouterLink to="/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </RouterLink>
               </Grid>
             </Grid>
           </Box>
