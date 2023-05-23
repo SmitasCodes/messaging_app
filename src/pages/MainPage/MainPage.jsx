@@ -1,27 +1,16 @@
 import React from "react";
-import { authServices } from "../../services/auth";
-import { useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import Container from "@mui/material/Container";
+import Nav from "../../components/Nav";
 
 const MainPage = () => {
-  const { loggedIn } = useSelector((state) => state.auth);
-
-  const signOutHandler = () => {
-    authServices.signOutService();
-  };
-
   return (
-    <div>
-      MainPage
-      {loggedIn ? (
-        <a onClick={signOutHandler}>LogOut</a>
-      ) : (
-        <div>
-          <Link to="/login">Login </Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </div>
+    <Container
+      component="main"
+      maxWidth="1"
+      sx={{ backgroundColor: "background.default", height: "100vh" }}
+    >
+      <Nav />
+    </Container>
   );
 };
 
