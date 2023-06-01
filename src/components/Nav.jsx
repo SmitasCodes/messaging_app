@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { authServices } from "../services/auth";
 import { Link, Navigate } from "react-router-dom";
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 
 const Nav = () => {
   const { loggedIn } = useSelector((state) => state.auth);
@@ -12,8 +11,8 @@ const Nav = () => {
   };
 
   return (
-    <Box>
-      <AppBar sx={{ backgroundColor: "background.paper"}}>
+    <div>
+      <div>
           {loggedIn ? (
             <a onClick={signOutHandler}>LogOut</a>
           ) : (
@@ -26,8 +25,8 @@ const Nav = () => {
               </Link>
             </div>
           )}
-      </AppBar>
-    </Box>
+      </div>
+    </div>
   );
 };
 
