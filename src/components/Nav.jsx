@@ -13,18 +13,23 @@ const Nav = () => {
   return (
     <div>
       <div>
-          {loggedIn ? (
+        {loggedIn ? (
+          <div>
             <a onClick={signOutHandler}>LogOut</a>
-          ) : (
-            <div>
-              <Link to="/login" color="textPrimary">
-                Login
-              </Link>
-              <Link to="/signup" color="textPrimary">
-                Sign up
-              </Link>
-            </div>
-          )}
+            <Link to="/newchannel">
+              Add channel
+            </Link>
+          </div>
+        ) : (
+          <div>
+            <Link to="/login" color="textPrimary">
+              Login
+            </Link>
+            <Link to="/signup" color="textPrimary">
+              Sign up
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

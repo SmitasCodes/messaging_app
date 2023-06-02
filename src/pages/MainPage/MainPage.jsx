@@ -1,10 +1,11 @@
 import React from "react";
 import Nav from "../../components/Nav";
+import Channels from "../../components/Channels/Channels";
 
 const MainPage = () => {
   return (
-    <div >
-      <p className="bg-red-900">MAIN</p>
+    <div className="h-screen">
+      <Channels className="bg-light-gray" />
       <Nav />
     </div>
   );
