@@ -3,9 +3,8 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        "light-gray" : "#666",
-        "light-white" : "#FFFAFA",
+      maxWidth: {
+        "channels": "280px",
       },
     },
   },

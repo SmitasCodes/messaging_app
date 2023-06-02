@@ -1,18 +1,18 @@
 import React, { useRef } from "react";
 
-const NewChannel = () => {
+const NewChannelModal = () => {
   const formRef = useRef(null);
   const handleSubmit = (event) => {
     console.log(event);
   };
 
   return (
-    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm p-5 rounded-md bg-sky-300">
       <form className="space-y-6" onSubmit={handleSubmit} ref={formRef}>
         <div>
           <label
             htmlFor="channel_name"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="block text-base font-medium leading-6 text-gray-900 "
           >
             Channel name
           </label>
@@ -32,7 +32,7 @@ const NewChannel = () => {
           <div className="flex items-center justify-between">
             <label
               htmlFor="accessibility"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-sm font-medium leading-6 text-gray-900 text-base "
             >
               Accessibility
             </label>
@@ -55,7 +55,7 @@ const NewChannel = () => {
         <div>
           <button
             type="submit"
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition"
             onClick={handleSubmit}
           >
             Add Channel
@@ -66,4 +66,4 @@ const NewChannel = () => {
   );
 };
 
-export default NewChannel;
+export default NewChannelModal;

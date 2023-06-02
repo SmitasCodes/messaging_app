@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { authServices } from "../services/auth";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import NewChannelModal from "./Channels/NewChannelModal";
+import ReactModal from "react-modal";
 
 const Nav = () => {
   const { loggedIn } = useSelector((state) => state.auth);
@@ -10,15 +12,40 @@ const Nav = () => {
     authServices.signOutService();
   };
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const addChannel = () => {
+    // Add logic to handle channel creation
+    closeModal();
+    history.push("/channels"); // Redirect to the channels page or any other appropriate route
+  };
+
   return (
     <div>
       <div>
         {loggedIn ? (
           <div>
             <a onClick={signOutHandler}>LogOut</a>
-            <Link to="/newchannel">
-              Add channel
+            <Link to="/" onClick={openModal}>
+              Add Channel
             </Link>
+            <ReactModal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              contentLabel="Modal"
+              className="bg-none sm:max-w-sm mx-auto"
+              overlayClassName="fixed inset-0 bg-black bg-opacity-75 px-4 "
+            >
+              {<NewChannelModal />}
+            </ReactModal>
           </div>
         ) : (
           <div>

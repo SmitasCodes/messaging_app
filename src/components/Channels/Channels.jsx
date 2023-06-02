@@ -18,8 +18,8 @@ const Channels = () => {
   ];
 
   return (
-    <div className="w-1/5 max-w-xs bg-light-gray h-screen min-w-150 float-left px-2">
-      <h2 className="text-center py-2">Channels</h2>
+    <div className="w-full max-w-channels bg-sky-300 h-screen min-w-150 float-left px-2">
+      <h2 className="text-center py-2 text-lg">Channels</h2>
       <ul>
         {channelsList.map((channel) => {
           return <Channel name={channel.name} logo={channel.logo} />;
