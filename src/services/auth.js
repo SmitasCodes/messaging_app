@@ -8,9 +8,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { authChange } from "../redux/features/auth/authSlice";
-
 import { addDoc, collection } from "firebase/firestore";
-
 const auth = getAuth();
 
 // Service for user to be logged in.

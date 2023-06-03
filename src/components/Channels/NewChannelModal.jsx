@@ -1,11 +1,20 @@
 import React, { useRef } from "react";
+import { channelServices } from "../../services/channels";
 
 const NewChannelModal = () => {
   const formRef = useRef(null);
-  const handleSubmit = (event) => {
-    console.log(event);
-  };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = formRef.current;
+    const data = new FormData(form);
+    await channelServices.addNewChannelService({
+      channel_name: data.get("channel_name"),
+      accessibility: data.get("accessibility"),
+      logo: data.get("logo"),
+    });
+  };
+  
   return (
     <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm p-5 rounded-md bg-sky-300">
       <form className="space-y-6" onSubmit={handleSubmit} ref={formRef}>
@@ -32,7 +41,7 @@ const NewChannelModal = () => {
           <div className="flex items-center justify-between">
             <label
               htmlFor="accessibility"
-              className="block text-sm font-medium leading-6 text-gray-900 text-base "
+              className="block font-medium leading-6 text-gray-900 text-base "
             >
               Accessibility
             </label>
@@ -43,12 +52,32 @@ const NewChannelModal = () => {
               name="accessibility"
               className="block w-full rounded-md border-0 py-2 px-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             >
-              <option selected value="">
+              <option defaultValue value="">
                 -----
               </option>
-              <option value="private">Public</option>
+              <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="logo"
+            className="block text-base font-medium leading-6 text-gray-900 "
+          >
+            Logo
+            <span className="text-gray-600">{`  (paste url)`}</span>
+          </label>
+          <div className="mt-2">
+            <input
+              id="logo"
+              name="logo"
+              type="text"
+              autoComplete="logo"
+              required
+              className="block w-full rounded-md border-0 py-1.5 px-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
           </div>
         </div>
 

@@ -43,6 +43,7 @@ const Nav = () => {
               contentLabel="Modal"
               className="bg-none sm:max-w-sm mx-auto"
               overlayClassName="fixed inset-0 bg-black bg-opacity-75 px-4 "
+              ariaHideApp={false}
             >
               {<NewChannelModal />}
             </ReactModal>
