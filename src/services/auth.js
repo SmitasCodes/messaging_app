@@ -12,30 +12,16 @@ import { addDoc, collection } from "firebase/firestore";
 const auth = getAuth();
 
 // Service for user to be logged in.
-const signInService = async ({ email, password }) => {
-  if (!email.trim() || !password.trim()) {
-    console.log("Please enter all the fields");
-  }
-
+const signInService = ({ email, password, onError }) => {
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {})
     .catch((error) => {
-      console.log(error.code, error.message);
+      onError(error.message.replace("Firebase: ", ""));
     });
 };
 
 // Service for user to be signed up
-const signUpService = async ({ firstName, lastName, email, password }) => {
-  if (
-    !firstName.trim() ||
-    !lastName.trim() ||
-    !email.trim() ||
-    !password.trim()
-  ) {
-    console.log("Please enter all the fields");
-    return;
-  }
-
+const signUpService = ({ firstName, lastName, email, password, onError }) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then(async () => {
       try {
@@ -47,7 +33,7 @@ const signUpService = async ({ firstName, lastName, email, password }) => {
       }
     })
     .catch((error) => {
-      console.log(error.code, error.message);
+      onError(error.message.replace("Firebase: ", ""));
     });
 };
 

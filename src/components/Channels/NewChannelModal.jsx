@@ -1,20 +1,39 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { channelServices } from "../../services/channels";
 
 const NewChannelModal = () => {
   const formRef = useRef(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Getting input values from form and putting it into obj.
     const form = formRef.current;
     const data = new FormData(form);
-    await channelServices.addNewChannelService({
+
+    const channelInput = {
       channel_name: data.get("channel_name"),
       accessibility: data.get("accessibility"),
       logo: data.get("logo"),
+    };
+
+    // Checking if all fields are present
+    if (
+      !channelInput.channel_name.trim() ||
+      !channelInput.accessibility.trim() ||
+      !channelInput.logo.trim()
+    ) {
+      setErrorMsg("Please enter all the fields");
+      return;
+    }
+
+    // Sending data to an service
+    await channelServices.addNewChannelService({
+      ...channelInput,
     });
   };
-  
+
   return (
     <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-sm p-5 rounded-md bg-sky-300">
       <form className="space-y-6" onSubmit={handleSubmit} ref={formRef}>
@@ -79,6 +98,10 @@ const NewChannelModal = () => {
               className="block w-full rounded-md border-0 py-1.5 px-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
+        </div>
+
+        <div>
+          <p className="text-sm text-red-600">{errorMsg}</p>
         </div>
 
         <div>

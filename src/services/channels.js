@@ -3,11 +3,6 @@ import db from "../firebase/firebaseSetup";
 
 // Service for adding new channels
 const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
-  if (!channel_name.trim() || !accessibility.trim() || !logo.trim()) {
-    console.log("Please enter all the fields");
-    return;
-  }
-
   const addChannel = await addDoc(collection(db, "channels"), {
     channel_name,
     accessibility,

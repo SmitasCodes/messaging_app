@@ -1,17 +1,34 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { authServices } from "../../services/auth";
 
 const SignIn = () => {
   const formRef = useRef(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Getting input values from form and putting it into obj.
     const form = formRef.current;
     const data = new FormData(form);
-    await authServices.signInService({
+
+    const userInput = {
       email: data.get("email"),
       password: data.get("password"),
+    };
+
+    // Checking if all fields are present
+    if (!userInput.email.trim() || !userInput.password.trim()) {
+      setErrorMsg("Please enter all the fields");
+    }
+
+    // Sending data to an service and setting errors
+    authServices.signInService({
+      ...userInput,
+      onError: (error) => {
+        setErrorMsg(error);
+      },
     });
   };
 
@@ -77,6 +94,10 @@ const SignIn = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+            </div>
+
+            <div>
+              <p className="text-sm text-red-600">{errorMsg}</p>
             </div>
 
             <div>

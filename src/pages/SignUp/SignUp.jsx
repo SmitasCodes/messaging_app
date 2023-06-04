@@ -1,19 +1,42 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { authServices } from "../../services/auth";
 
 const SignUp = () => {
   const formRef = useRef(null);
-  const handleSubmit = async (event) => {
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Getting input values from form and putting it into obj.
     const form = formRef.current;
     const data = new FormData(form);
-    console.log(data);
-    await authServices.signUpService({
+
+    const userInput = {
       email: data.get("email"),
       password: data.get("password"),
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
+    };
+
+    // Checking if all fields are present
+    if (
+      !userInput.firstName.trim() ||
+      !userInput.lastName.trim() ||
+      !userInput.email.trim() ||
+      !userInput.password.trim()
+    ) {
+      setErrorMsg("Please enter all required fields");
+      return;
+    }
+
+    // Sending data to an service and setting errors
+    authServices.signUpService({
+      ...userInput,
+      onError: (error) => {
+        setErrorMsg(error);
+      },
     });
   };
 
@@ -104,12 +127,16 @@ const SignUp = () => {
             </div>
 
             <div>
+              <p className="text-sm text-red-600">{errorMsg}</p>
+            </div>
+
+            <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={handleSubmit}
               >
-                Sign in
+                Sign up
               </button>
             </div>
           </form>

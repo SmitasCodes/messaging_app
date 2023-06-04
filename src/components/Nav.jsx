@@ -22,12 +22,6 @@ const Nav = () => {
     setModalIsOpen(false);
   };
 
-  const addChannel = () => {
-    // Add logic to handle channel creation
-    closeModal();
-    history.push("/channels"); // Redirect to the channels page or any other appropriate route
-  };
-
   return (
     <div>
       <div>
