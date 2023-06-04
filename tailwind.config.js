@@ -4,7 +4,10 @@ export default {
   theme: {
     extend: {
       maxWidth: {
-        "channels": "280px",
+        channels: "280px",
+      },
+      minWidth: {
+        channels: "48px",
       },
     },
   },

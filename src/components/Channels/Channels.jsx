@@ -4,22 +4,9 @@ import { channelServices } from "../../services/channels";
 
 const Channels = () => {
   const [channels, setChannels] = useState([]);
-  const channelsList = [
-    {
-      name: "channel 1",
-      logo: "https://www.shorturl.at/img/shorturl-icon.png",
-    },
-    {
-      name: "channel 2",
-      logo: "https://www.shorturl.at/img/shorturl-icon.png",
-    },
-    {
-      name: "channel 3",
-      logo: "https://www.shorturl.at/img/shorturl-icon.png",
-    },
-  ];
 
   useEffect(() => {
+    // Getting all the channels and putting it into array
     const getAllChannels = async () => {
       setChannels(await channelServices.getAllChannelsService());
     };
@@ -27,12 +14,16 @@ const Channels = () => {
     getAllChannels();
   }, []);
 
-  console.log(channels);
-
   return (
-    <div className="w-full max-w-channels bg-sky-300 h-screen min-w-150 float-left px-2">
-      <h2 className="text-center py-2 text-lg">Channels</h2>
-      <ul>
+    <div className="w-1/4 max-w-channels bg-sky-300 h-screen min-w-channels float-left max-md:w-20 max-sm:w-16">
+      <h2 className="text-lg bg-sky-500 border-b-4 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
+        Channels
+      </h2>
+      <div className="h-12 flex items-center justify-center bg-sky-500 md:hidden">
+        <img src="../../../public/bars-solid.svg" alt="Bars" className="h-10 w-10 max-sm:w-9 max-sm:h-9 " />
+      </div>
+
+      <ul className="px-2">
         {channels.map((channel) => {
           return (
             <Channel

@@ -23,14 +23,23 @@ const Nav = () => {
   };
 
   return (
-    <div>
+    <div className="bg-sky-400 h-12 flex justify-end flex-wrap px-2 py-1">
       <div>
         {loggedIn ? (
-          <div>
-            <a onClick={signOutHandler}>LogOut</a>
-            <Link to="/" onClick={openModal}>
+          <div className="flex">
+            <Link
+              to="/"
+              onClick={openModal}
+              className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition max-md:text-sm"
+            >
               Add Channel
             </Link>
+            <a
+              onClick={signOutHandler}
+              className="h-10 flex items-center justify-center px-2  mr-1 rounded-md bg-sky-200 border-2 border-sky-600 cursor-pointer hover:bg-sky-600 transition max-md:text-sm"
+            >
+              Sign Out
+            </a>
             <ReactModal
               isOpen={modalIsOpen}
               onRequestClose={closeModal}
@@ -43,11 +52,19 @@ const Nav = () => {
             </ReactModal>
           </div>
         ) : (
-          <div>
-            <Link to="/login" color="textPrimary">
+          <div className="flex">
+            <Link
+              to="/login"
+              color="textPrimary"
+              className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition max-md:text-sm"
+            >
               Login
             </Link>
-            <Link to="/signup" color="textPrimary">
+            <Link
+              to="/signup"
+              color="textPrimary"
+              className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition max-md:text-sm"
+            >
               Sign up
             </Link>
           </div>
