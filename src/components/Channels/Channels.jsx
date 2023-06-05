@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Channel from "./Channel";
 import { channelServices } from "../../services/channels";
+import { Route, Routes } from "react-router-dom";
+import Nav from "../Nav";
 
 const Channels = () => {
   const [channels, setChannels] = useState([]);
@@ -20,7 +22,11 @@ const Channels = () => {
         Channels
       </h2>
       <div className="h-12 flex items-center justify-center bg-sky-500 md:hidden">
-        <img src="../../../public/bars-solid.svg" alt="Bars" className="h-10 w-10 max-sm:w-9 max-sm:h-9 " />
+        <img
+          src="../../../public/bars-solid.svg"
+          alt="Bars"
+          className="h-10 w-10 max-sm:w-9 max-sm:h-9 "
+        />
       </div>
 
       <ul className="px-2">
@@ -29,6 +35,7 @@ const Channels = () => {
             <Channel
               name={channel.channel_name}
               logo={channel.logo}
+              id={channel.id}
               key={channel.channel_name}
             />
           );

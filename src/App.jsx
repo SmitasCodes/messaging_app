@@ -14,7 +14,7 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="*" element={<MainPage />} />
           <Route path="/newchannel" element={<NewChannelModal />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/login" element={<SignIn />} />
