@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Channel from "./Channel";
 import { channelServices } from "../../services/channels";
-import { Route, Routes } from "react-router-dom";
-import Nav from "../Nav";
+import { useDispatch } from "react-redux";
+import { updateChannels } from "../../redux/features/channels/channelsSlice";
+import { Link } from "react-router-dom";
 
 const Channels = () => {
   const [channels, setChannels] = useState([]);
+  const dispatch = useDispatch();
 
+  // Getting all the channels and putting it into array
   useEffect(() => {
-    // Getting all the channels and putting it into array
     const getAllChannels = async () => {
       setChannels(await channelServices.getAllChannelsService());
     };
@@ -16,11 +18,18 @@ const Channels = () => {
     getAllChannels();
   }, []);
 
+  // Mapping through channels array and dispatching channels to redux store
+  useEffect(() => {
+    dispatch(updateChannels(channels));
+  }, [channels]);
+
   return (
     <div className="w-1/4 max-w-channels bg-sky-300 h-screen min-w-channels float-left max-md:w-20 max-sm:w-16">
-      <h2 className="text-lg bg-sky-500 border-b-4 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
-        Channels
-      </h2>
+      <Link to="/">
+        <h2 className="text-lg bg-sky-500 border-b-4 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
+          Channels
+        </h2>
+      </Link>
       <div className="h-12 flex items-center justify-center bg-sky-500 md:hidden">
         <img
           src="../../../public/bars-solid.svg"

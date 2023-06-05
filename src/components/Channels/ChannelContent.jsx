@@ -1,12 +1,12 @@
 import React from "react";
-import Content from "../content";
 
-const ChannelContent = () => {
+const ChannelContent = ({ name, messages }) => {
   return (
-    <Content>
-      <h1>smart</h1>
-    </Content>
-  );
+    <div>
+      <h2>{name}</h2>
+      
+    </div>
+    )
 };
 
 export default ChannelContent;
