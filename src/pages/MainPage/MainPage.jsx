@@ -12,13 +12,13 @@ const MainPage = () => {
   return (
     <div className="h-screen">
       <Channels className="bg-light-gray" />
-      <Nav />
-      <div className="bg-red-200">
+      
+      {/* <div className="bg-red-200">
           <h1>
             Welcome to my page! Page was created with React,tailwind and
             Firebase for backend
           </h1>
-      </div>
+      </div> */}
       <Routes>
         <Route path="/channels/">
           {channels.map((channel) => {
@@ -38,6 +38,7 @@ const MainPage = () => {
         </Route>
         ;
       </Routes>
+      <Nav />
     </div>
   );
 };

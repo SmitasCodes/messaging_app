@@ -1,12 +1,12 @@
 import React from "react";
+import ChannelUsers from "./ChannelUsers";
 
 const ChannelContent = ({ name, messages }) => {
   return (
     <div>
-      <h2>{name}</h2>
-      
+      <ChannelUsers />
     </div>
-    )
+  );
 };
 
 export default ChannelContent;
