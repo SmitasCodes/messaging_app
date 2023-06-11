@@ -15,9 +15,9 @@ const ChannelUsers = () => {
       logo: "https://ps.w.org/url-shortify/assets/icon-256x256.png?rev=2304705",
     },
   ];
+
   return (
-    <div>
-      <ul className="w-1/4 max-w-channels_users bg-sky-300 min-w-channels float-left max-md:w-20 max-sm:w-16 h-screen">
+      <ul className="w-1/4 max-w-channels_users bg-sky-300 min-w-channels  max-md:w-20 max-sm:w-16 h-screen">
         <h2 className="text-lg bg-sky-500 border-b-4 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
           Users
         </h2>
@@ -37,7 +37,6 @@ const ChannelUsers = () => {
           );
         })}
       </ul>
-    </div>
   );
 };
 

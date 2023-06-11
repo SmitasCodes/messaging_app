@@ -21,13 +21,27 @@ const signInService = ({ email, password, onError }) => {
 };
 
 // Service for user to be signed up
-const signUpService = ({ firstName, lastName, email, password, onError }) => {
+const signUpService = ({
+  firstName,
+  username,
+  lastName,
+  email,
+  password,
+  onError,
+}) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then(async () => {
       try {
-        const user = { firstName, lastName, email, password, role: "user" };
+        const user = {
+          username,
+          firstName,
+          lastName,
+          email,
+          role: "user",
+          channels: [],
+        };
         const addUser = await addDoc(collection(db, "users"), user);
-        console.log(`User added: ${user.email}`);
+        console.log(`User added: ${user.userName}`);
       } catch (error) {
         console.log(error);
       }

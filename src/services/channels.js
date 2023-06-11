@@ -1,5 +1,6 @@
 import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
 import db from "../firebase/firebaseSetup";
+import { messagesService } from "./messages";
 
 // Service for adding new channels
 const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
@@ -9,7 +10,6 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
     logo,
     users: [],
     messages: [],
-    docId: "", // Placeholder for the document ID
   });
 
   const channelId = addChannel.id;
@@ -20,6 +20,9 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
   });
 
   console.log("Document written with ID: ", channelId);
+
+  // Calling out messages service to add messages subcollection
+  // messagesService.createMessagesSubcollection(addChannel);
 };
 
 // Service for getting all of the channels

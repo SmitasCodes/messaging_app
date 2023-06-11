@@ -18,6 +18,7 @@ const SignUp = () => {
       password: data.get("password"),
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
+      username: data.get("username"),
     };
 
     // Checking if all fields are present
@@ -25,7 +26,8 @@ const SignUp = () => {
       !userInput.firstName.trim() ||
       !userInput.lastName.trim() ||
       !userInput.email.trim() ||
-      !userInput.password.trim()
+      !userInput.password.trim() ||
+      !userInput.username.trim()
     ) {
       setErrorMsg("Please enter all required fields");
       return;
@@ -69,6 +71,25 @@ const SignUp = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <input
+                  id="username"
+                  name="username"
+                  type="username"
+                  autoComplete="username"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />

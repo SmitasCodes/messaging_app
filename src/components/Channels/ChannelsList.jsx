@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { updateChannels } from "../../redux/features/channels/channelsSlice";
 import { Link } from "react-router-dom";
 
-const Channels = () => {
+const Channelslist = () => {
   const [channels, setChannels] = useState([]);
   const dispatch = useDispatch();
 
@@ -24,15 +24,15 @@ const Channels = () => {
   }, [channels]);
 
   return (
-    <div className="w-1/4 max-w-channels bg-sky-300 h-screen min-w-channels float-left max-md:w-20 max-sm:w-16">
+    <div className="mt-2">
       <Link to="/">
-        <h2 className="text-lg bg-sky-500 border-b-4 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
+        <h2 className="text-lg bg-sky-500 border-2 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
           Channels
         </h2>
       </Link>
       <div className="h-12 flex items-center justify-center bg-sky-500 md:hidden">
         <img
-          src="../../../public/bars-solid.svg"
+          src="/bars-solid.svg"
           alt="Bars"
           className="h-10 w-10 max-sm:w-9 max-sm:h-9 "
         />
@@ -54,4 +54,4 @@ const Channels = () => {
   );
 };
 
-export default Channels;
+export default Channelslist;

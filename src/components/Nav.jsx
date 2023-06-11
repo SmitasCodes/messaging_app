@@ -4,6 +4,7 @@ import { authServices } from "../services/auth";
 import { Link } from "react-router-dom";
 import NewChannelModal from "./Channels/NewChannelModal";
 import ReactModal from "react-modal";
+import Channelslist from "./Channels/Channelslist";
 
 const Nav = () => {
   const { loggedIn } = useSelector((state) => state.auth);
@@ -23,53 +24,45 @@ const Nav = () => {
   };
 
   return (
-    <div className="bg-sky-400 h-12 flex justify-end flex-wrap px-2 py-1">
+    <div className="w-1/4 max-w-channels bg-sky-300 h-screen min-w-channels float-left max-md:w-20 max-sm:w-16">
       <div>
         {loggedIn ? (
-          <div className="flex">
-            <Link
-              to="/"
-              onClick={openModal}
-              className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition max-md:text-sm"
-            >
-              Add Channel
-            </Link>
-            <a
-              onClick={signOutHandler}
-              className="h-10 flex items-center justify-center px-2  mr-1 rounded-md bg-sky-200 border-2 border-sky-600 cursor-pointer hover:bg-sky-600 transition max-md:text-sm"
-            >
-              Sign Out
-            </a>
-            <ReactModal
-              isOpen={modalIsOpen}
-              onRequestClose={closeModal}
-              contentLabel="Modal"
-              className="bg-none sm:max-w-sm mx-auto"
-              overlayClassName="fixed inset-0 bg-black bg-opacity-75 px-4 "
-              ariaHideApp={false}
-            >
-              {<NewChannelModal />}
-            </ReactModal>
+          <div className="px-2">
+            <ul>
+              <li className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1  cursor-pointer">
+                <Link to="/" onClick={openModal}>
+                  Add Channel
+                </Link>
+              </li>
+              <li className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1  cursor-pointer">
+                <a onClick={signOutHandler}>Sign Out</a>
+              </li>
+              <ReactModal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Modal"
+                className="bg-none sm:max-w-sm mx-auto"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-75 px-4 "
+                ariaHideApp={false}
+              >
+                {<NewChannelModal />}
+              </ReactModal>
+            </ul>
           </div>
         ) : (
-          <div className="flex">
-            <Link
-              to="/login"
-              color="textPrimary"
-              className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition max-md:text-sm"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              color="textPrimary"
-              className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition max-md:text-sm"
-            >
-              Sign up
-            </Link>
+          <div className="px-2">
+            <ul>
+              <li className="h-10 flex items-center justify-center px-2 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1 cursor-pointer">
+                <Link to="/login">Login</Link>
+              </li>
+              <li className="h-10 flex items-center justify-center px-2 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1 cursor-pointer">
+                <Link to="/signup">Sign up</Link>
+              </li>
+            </ul>
           </div>
         )}
       </div>
+      <Channelslist />
     </div>
   );
 };
