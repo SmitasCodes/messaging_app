@@ -4,25 +4,24 @@ import { messagesService } from "./messages";
 
 // Service for adding new channels
 const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
-  const addChannel = await addDoc(collection(db, "channels"), {
+  const channelRef = await addDoc(collection(db, "channels"), {
     channel_name,
     accessibility,
     logo,
     users: [],
-    messages: [],
   });
 
-  const channelId = addChannel.id;
+  const channelId = channelRef.id;
 
   // Update the document with the actual ID
-  await updateDoc(addChannel, {
+  await updateDoc(channelRef, {
     id: channelId,
   });
 
-  console.log("Document written with ID: ", channelId);
+  console.log("Document written with ID: ", channelRef);
 
   // Calling out messages service to add messages subcollection
-  // messagesService.createMessagesSubcollection(addChannel);
+  messagesService.createMessagesSubcollection();
 };
 
 // Service for getting all of the channels

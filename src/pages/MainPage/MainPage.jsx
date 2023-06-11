@@ -14,36 +14,6 @@ const MainPage = () => {
     <div className="h-screen flex">
       <Nav />
 
-      {/* <Routes>
-        <Route
-          path="/"
-          element={
-            <Testas>
-              <Landing />
-            </Testas>
-          }
-        />
-        <Route path="/channels/">
-          {channels.map((channel) => {
-            return (
-              <Route
-                key={channel.id}
-                path={`${channel.id}`}
-                element={
-                  <Testas>
-                    <ChTestas
-                      name={channel.channel_name}
-                      messages={channel.messages}
-                    />
-                  </Testas>
-                }
-              />
-            );
-          })}
-        </Route>
-        ;
-      </Routes> */}
-
       <Routes>
         <Route
           path="/"
@@ -64,6 +34,7 @@ const MainPage = () => {
                     <ChannelContent
                       name={channel.channel_name}
                       messages={channel.meesages}
+                      id={channel.id}
                     />
                   </RightDiv>
                 }

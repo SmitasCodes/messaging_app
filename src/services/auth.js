@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { authChange } from "../redux/features/auth/authSlice";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 const auth = getAuth();
 
 // Service for user to be logged in.
@@ -30,17 +30,24 @@ const signUpService = ({
   onError,
 }) => {
   createUserWithEmailAndPassword(auth, email, password)
-    .then(async () => {
+    .then(async (userCredential) => {
       try {
-        const user = {
-          username,
-          firstName,
-          lastName,
-          email,
-          role: "user",
-          channels: [],
-        };
-        const addUser = await addDoc(collection(db, "users"), user);
+        try {
+          const uid = userCredential.user.uid;
+          const user = {
+            username,
+            firstName,
+            lastName,
+            email,
+            role: "user",
+            channels: [],
+          };
+          const userRef = doc(db, "users", uid);
+          await setDoc(userRef, user);
+          console.log(`User added with ID: ${uid}`);
+        } catch (error) {
+          console.log(error);
+        }
         console.log(`User added: ${user.userName}`);
       } catch (error) {
         console.log(error);
@@ -64,15 +71,28 @@ const signOutService = () => {
 const authStateStatus = () => {
   const dispatch = useDispatch();
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
+      const { uid } = user;
+      const  username  = await userDataDispatch(uid);
       console.log("Signed In");
-      dispatch(authChange({ loggedIn: true, role: "user" }));
+      dispatch(authChange({ loggedIn: true, role: "user", username, uid }));
     } else {
-      dispatch(authChange({ loggedIn: false, role: null }));
+      dispatch(
+        authChange({ loggedIn: false, role: null, username: null, uid: null })
+      );
       console.log("Not Signed In");
     }
   });
+};
+
+// Additional function, if user is logged in its going to search for user data by his uid
+const userDataDispatch = async (uid) => {
+  const userRef = doc(db, `users`, uid);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+  const { username } = userData;
+  return username;
 };
 
 // All functions being put into authServices object and then exported

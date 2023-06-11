@@ -2,18 +2,17 @@ import { addDoc, collection } from "firebase/firestore";
 import db from "../firebase/firebaseSetup";
 
 // Service to create a messages subcollection for a channel
-// const createMessagesSubcollection = async (channelRef) => {
-//   console.log(channelRef)
-//   const addMessages = collection(channelRef, "messages");
+const createMessagesSubcollection = (channelRef) => {
+  const messagesRef = collection(channelRef, "messages");
 
-//   console.log("Messages subcollection created.");
+  console.log("Messages subcollection created.");
 
-//   return addMessages;
-// };
+  return messagesRef;
+};
 
 // Service to add new messages
-const addMessage = async (messageData) => {
-  await addDoc(collection(db, "channels/qltqk2InfeQykENl1SJP/messages"), {
+const addMessage = async ( channelId, messageData ) => {
+  await addDoc(collection(db, `channels/${channelId}/messages`), {
     ...messageData,
     timestamp: new Date(),
   });
@@ -22,6 +21,6 @@ const addMessage = async (messageData) => {
 };
 
 export const messagesService = {
-  // createMessagesSubcollection,
+  createMessagesSubcollection,
   addMessage,
 };
