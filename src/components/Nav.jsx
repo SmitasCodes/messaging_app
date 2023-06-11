@@ -24,19 +24,17 @@ const Nav = () => {
   };
 
   return (
-    <div className="w-1/4 max-w-channels bg-sky-300 h-screen min-w-channels float-left max-md:w-20 max-sm:w-16">
+    <div className="w-1/4 max-w-channels bg-sky-300 h-screen min-w-channels float-left max-md:w-20 max-sm:w-16 relative">
       <div>
         {loggedIn ? (
-          <div className="px-2">
-            <ul>
+          <div>
+            <ul className="px-2">
               <li className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1  cursor-pointer">
                 <Link to="/" onClick={openModal}>
                   Add Channel
                 </Link>
               </li>
-              <li className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1  cursor-pointer">
-                <a onClick={signOutHandler}>Sign Out</a>
-              </li>
+
               <ReactModal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -48,10 +46,16 @@ const Nav = () => {
                 {<NewChannelModal />}
               </ReactModal>
             </ul>
+            <Channelslist />
+            <ul className="px-2 self-end absolute w-full bottom-1">
+              <li className="h-10 flex items-center justify-center px-2 mr-1 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1  cursor-pointer">
+                <a onClick={signOutHandler}>Sign Out</a>
+              </li>
+            </ul>
           </div>
         ) : (
-          <div className="px-2">
-            <ul>
+          <div>
+            <ul className="px-2">
               <li className="h-10 flex items-center justify-center px-2 rounded-md bg-sky-200 border-2 border-sky-600 hover:bg-sky-600 transition my-1 cursor-pointer">
                 <Link to="/login">Login</Link>
               </li>
@@ -59,10 +63,10 @@ const Nav = () => {
                 <Link to="/signup">Sign up</Link>
               </li>
             </ul>
+            <Channelslist />
           </div>
         )}
       </div>
-      <Channelslist />
     </div>
   );
 };
