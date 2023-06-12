@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { messagesService } from "../../../services/messages";
+import ChannelMessage from "./ChannelMessage";
 
 const ChannelMessages = () => {
   const { currentChannelID } = useSelector((state) => state.channels);
@@ -21,9 +22,22 @@ const ChannelMessages = () => {
 
   return (
     <div
-      className="flex-1
+      className="flex-1 p-3
   "
-    ></div>
+    >
+      {!messages ? (
+        <p>No messages</p>
+      ) : (
+        messages.map((message) => {
+          return (
+            <ChannelMessage
+              username={message.username}
+              content={message.content}
+            />
+          );
+        })
+      )}
+    </div>
   );
 };
 
