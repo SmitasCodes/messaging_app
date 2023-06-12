@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { messagesService } from "../../../services/messages";
 
 // Posting messages to channel
-const ChannelForm = ({ channelID }) => {
+const ChannelForm = () => {
   const { username } = useSelector((state) => state.auth);
-  const { currentChannel } = useSelector((state) => state.channels);
+  const { currentChannelID } = useSelector((state) => state.channels);
 
   const messageInput = useRef(null);
 
@@ -24,7 +24,7 @@ const ChannelForm = ({ channelID }) => {
       content,
     };
 
-    messagesService.addMessage(currentChannel, messageData);
+    messagesService.addMessageService(currentChannelID, messageData);
 
     messageInput.current.value = "";
   };
@@ -37,11 +37,7 @@ const ChannelForm = ({ channelID }) => {
       }}
     >
       <div className="relative">
-        <input
-          type="text"
-          className="w-full block relative"
-          ref={messageInput}
-        />
+        <input type="text" className="w-full block" ref={messageInput} />
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-md px-2 rounded absolute right-0 top-0"

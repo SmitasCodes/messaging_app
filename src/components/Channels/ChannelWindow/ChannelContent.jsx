@@ -2,7 +2,7 @@ import React from "react";
 import ChannelUsers from "./ChannelUsers";
 import ChannelMessagesContainer from "./ChannelMessagesContainer";
 import { useDispatch } from "react-redux";
-import { setCurrentChannel } from "../../../redux/features/channels/channelsSlice";
+import { setCurrentChannelID } from "../../../redux/features/channels/channelsSlice";
 import { useEffect } from "react";
 
 const ChannelContent = ({ id }) => {
@@ -10,8 +10,8 @@ const ChannelContent = ({ id }) => {
 
   //Once page loads useEffect is dispatching current channel ID
   useEffect(() => {
-    dispatch(setCurrentChannel(id));
-  }, []);
+    dispatch(setCurrentChannelID(id));
+  },[id]);
 
   return (
     <>

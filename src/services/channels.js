@@ -21,7 +21,7 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
   console.log("Document written with ID: ", channelRef);
 
   // Calling out messages service to add messages subcollection
-  messagesService.createMessagesSubcollection();
+  // messagesService.createMessagesSubcollection();
 };
 
 // Service for getting all of the channels
