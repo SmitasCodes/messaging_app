@@ -45,7 +45,7 @@ const Channelslist = () => {
               name={channel.channel_name}
               logo={channel.logo}
               id={channel.id}
-              key={channel.channel_name}
+              key={channel.id}
             />
           );
         })}

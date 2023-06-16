@@ -26,7 +26,12 @@ const getMessagesService = async (channelID) => {
     collection(db, `channels/${channelID}/messages`)
   );
 
-  const messages = messagesSnapshot.docs.map((doc) => doc.data());
+  const messages = messagesSnapshot.docs.map((doc) => {
+    const message = doc.data();
+    message.id = doc.id;
+    return message;
+  });
+  
   return messages;
 };
 

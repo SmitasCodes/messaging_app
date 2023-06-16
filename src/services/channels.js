@@ -11,12 +11,12 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
     users: [],
   });
 
-  const channelId = channelRef.id;
+  // const channelId = channelRef.id;
 
-  // Update the document with the actual ID
-  await updateDoc(channelRef, {
-    id: channelId,
-  });
+  // // Update the document with the actual ID
+  // await updateDoc(channelRef, {
+  //   id: channelId,
+  // });
 
   console.log("Document written with ID: ", channelRef);
 
@@ -28,7 +28,12 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
 const getAllChannelsService = async () => {
   const channelsSnapshot = await getDocs(collection(db, "channels"));
 
-  const channels = channelsSnapshot.docs.map((doc) => doc.data());
+  const channels = channelsSnapshot.docs.map((doc) => {
+    const channel = doc.data();
+    channel.id = doc.id;
+    return channel;
+  });
+  
   return channels;
 };
 

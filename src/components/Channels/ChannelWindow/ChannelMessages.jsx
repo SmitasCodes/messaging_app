@@ -33,6 +33,8 @@ const ChannelMessages = () => {
             <ChannelMessage
               username={message.username}
               content={message.content}
+              timestamp={message.timestamp}
+              key={message.id}
             />
           );
         })
