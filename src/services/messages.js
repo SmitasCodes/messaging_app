@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot } from "firebase/firestore";
 import db from "../firebase/firebaseSetup";
 
 // Service to create a messages subcollection for a channel
@@ -31,12 +31,14 @@ const getMessagesService = async (channelID) => {
     message.id = doc.id;
     return message;
   });
-  
+
   return messages;
+
 };
 
+
+
 export const messagesService = {
-  // createMessagesSubcollection,
   addMessageService,
   getMessagesService,
 };

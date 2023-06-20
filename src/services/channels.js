@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, updateDoc } from "firebase/firestore";
 import db from "../firebase/firebaseSetup";
 import { messagesService } from "./messages";
 
@@ -18,7 +18,7 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
   //   id: channelId,
   // });
 
-  console.log("Document written with ID: ", channelRef);
+  // console.log("Document written with ID: ", channelRef);
 
   // Calling out messages service to add messages subcollection
   // messagesService.createMessagesSubcollection();
@@ -26,15 +26,30 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
 
 // Service for getting all of the channels
 const getAllChannelsService = async () => {
-  const channelsSnapshot = await getDocs(collection(db, "channels"));
+  // const channelsSnapshot = await getDocs(collection(db, "channels"));
 
-  const channels = channelsSnapshot.docs.map((doc) => {
-    const channel = doc.data();
-    channel.id = doc.id;
-    return channel;
-  });
+  // const channels = channelsSnapshot.docs.map((doc) => {
+  //   const channel = doc.data();
+  //   channel.id = doc.id;
+  //   return channel;
+  // });
   
-  return channels;
+  // return channels;
+
+  return new Promise((resolve, reject) => {
+    onSnapshot(
+      collection(db, `channels`),
+      (snapshot) => {
+        const channels = snapshot.docChanges().map((change) => {
+          const channel = change.doc.data();
+          channel.id = change.doc.id;
+          return channel;
+        });
+        resolve(channels);
+      },
+      reject
+    );
+  });
 };
 
 export const channelServices = {

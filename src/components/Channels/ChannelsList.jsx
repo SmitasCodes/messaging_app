@@ -1,18 +1,46 @@
 import React, { useEffect, useState } from "react";
 import Channel from "./Channel";
-import { channelServices } from "../../services/channels";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateChannels } from "../../redux/features/channels/channelsSlice";
 import { Link } from "react-router-dom";
+import { collection, onSnapshot } from "firebase/firestore";
+import db from "../../firebase/firebaseSetup";
 
 const Channelslist = () => {
   const [channels, setChannels] = useState([]);
   const dispatch = useDispatch();
+  const { loggedIn } = useSelector((state) => state.auth);
 
-  // Getting all the channels and putting it into array
+  // Getting all the channels, subscribing to them so then they get added they are shown in real time.
   useEffect(() => {
     const getAllChannels = async () => {
-      setChannels(await channelServices.getAllChannelsService());
+      const unsubscribe = onSnapshot(
+        collection(db, "channels"),
+        (snapshot) => {
+          const newChannels = [];
+
+          snapshot.docChanges().forEach((change) => {
+            const channel = change.doc.data();
+            channel.id = change.doc.id;
+
+            if (!loggedIn && channel.accessibility === "private") {
+              return;
+            }
+
+            newChannels.push(channel);
+          });
+
+          setChannels([]);
+          setChannels((prevChannels) => [...prevChannels, ...newChannels]);
+        },
+        (error) => {
+          console.log("Error fetching new messages:", error);
+        }
+      );
+
+      return () => {
+        unsubscribe();
+      };
     };
 
     getAllChannels();
@@ -23,6 +51,16 @@ const Channelslist = () => {
     dispatch(updateChannels(channels));
   }, [channels]);
 
+  // Removing private channels when user logs out
+  useEffect(() => {
+    if (!loggedIn) {
+      let updatedChannels = channels.filter(
+        (channel) => channel.accessibility !== "private"
+      );
+      setChannels(updatedChannels);
+    }
+  }, [loggedIn]);
+
   return (
     <div className="mt-2">
       <Link to="/">
@@ -30,6 +68,15 @@ const Channelslist = () => {
           Channels
         </h2>
       </Link>
+
+      {loggedIn ? (
+        ""
+      ) : (
+        <p className="text-sm text-center my-2 text-slate-600 px-2">
+          Since you are not logged in only public channels are displayed
+        </p>
+      )}
+
       <div className="h-12 flex items-center justify-center bg-sky-500 md:hidden">
         <img
           src="/bars-solid.svg"

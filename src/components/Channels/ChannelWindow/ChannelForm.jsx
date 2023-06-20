@@ -31,13 +31,13 @@ const ChannelForm = () => {
 
   return (
     <form
-      className="bg-red-300 bottom-1 h-16 block p-5 w-full "
+      className=" bottom-1 h-16 block p-5 w-full "
       onSubmit={(e) => {
         handleSubmit(e);
       }}
     >
       <div className="relative">
-        <input type="text" className="w-full block" ref={messageInput} />
+        <input type="text" className="w-full block rounded-md" ref={messageInput} />
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-md px-2 rounded absolute right-0 top-0"
