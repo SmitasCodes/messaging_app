@@ -4,7 +4,7 @@ import { authServices } from "../services/auth";
 import { Link } from "react-router-dom";
 import NewChannelModal from "./Channels/NewChannelModal";
 import ReactModal from "react-modal";
-import Channelslist from "./Channels/Channelslist";
+import Channelslist from "./Channels/Channelslist/Channelslist";
 
 const Nav = () => {
   const { loggedIn } = useSelector((state) => state.auth);

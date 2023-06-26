@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Channel from "./Channel";
+import Channel from "../Channel";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChannels } from "../../redux/features/channels/channelsSlice";
+import { updateChannels } from "../../../redux/features/channels/channelsSlice";
 import { Link } from "react-router-dom";
 import { collection, onSnapshot } from "firebase/firestore";
-import db from "../../firebase/firebaseSetup";
+import db from "../../../firebase/firebaseSetup";
+import ChannelsSearch from "./ChannelsSearch";
 
 const Channelslist = () => {
   const [channels, setChannels] = useState([]);
@@ -68,6 +69,8 @@ const Channelslist = () => {
           Channels
         </h2>
       </Link>
+
+      <ChannelsSearch />
 
       {loggedIn ? (
         ""

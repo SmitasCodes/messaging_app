@@ -35,6 +35,7 @@ const MainPage = () => {
                       name={channel.channel_name}
                       messages={channel.meesages}
                       id={channel.id}
+                      users={channel.users}
                     />
                   </RightDiv>
                 }

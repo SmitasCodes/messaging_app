@@ -6,9 +6,9 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authChange } from "../redux/features/auth/authSlice";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 const auth = getAuth();
 
 // Service for user to be logged in.
@@ -39,6 +39,7 @@ const signUpService = ({
             firstName,
             lastName,
             email,
+            lastTimeActive: true,
             role: "user",
             channels: [],
           };
@@ -67,21 +68,35 @@ const signOutService = () => {
     });
 };
 
-// Service for checking if user is currently signed in or not
+// Service for checking if user is currently signed in or not and setting offline and online status
 const authStateStatus = () => {
   const dispatch = useDispatch();
+  let uid = null;
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      const { uid } = user;
-      const  username  = await userDataDispatch(uid);
-      console.log("Signed In");
+      uid = user.uid;
+      const username = await userDataDispatch(uid);
+
       dispatch(authChange({ loggedIn: true, role: "user", username, uid }));
+
+      // Setting online status
+      await updateDoc(doc(db, "users", uid), {
+        lastTimeActive: true,
+      });
     } else {
+      // Setting status to offline
+      if (uid) {
+        await updateDoc(doc(db, "users", uid), {
+          lastTimeActive: false,
+        });
+      }
+
+      console.log("Not Signed In");
+
       dispatch(
         authChange({ loggedIn: false, role: null, username: null, uid: null })
       );
-      console.log("Not Signed In");
     }
   });
 };
