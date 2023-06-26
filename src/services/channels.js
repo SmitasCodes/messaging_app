@@ -1,4 +1,10 @@
-import { addDoc, collection, getDocs, onSnapshot, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import db from "../firebase/firebaseSetup";
 import { messagesService } from "./messages";
 
@@ -33,7 +39,7 @@ const getAllChannelsService = async () => {
   //   channel.id = doc.id;
   //   return channel;
   // });
-  
+
   // return channels;
 
   return new Promise((resolve, reject) => {
@@ -52,7 +58,36 @@ const getAllChannelsService = async () => {
   });
 };
 
+// Service for  joining channel
+const joinChannelService = async ({ channelID, uid, username, logo }) => {
+
+  console.log(channelID, logo)
+  const channelRef = await addDoc(
+    collection(db, `channels/${channelID}/users`),
+    {
+      uid,
+      username,
+      logo,
+    }
+  );
+
+  // const channelId = channelRef.id;
+
+  // // Update the document with the actual ID
+  // await updateDoc(channelRef, {
+  //   id: channelId,
+  // });
+
+  // console.log("Document written with ID: ", channelRef);
+
+  // Calling out messages service to add messages subcollection
+  // messagesService.createMessagesSubcollection();
+};
+
+// Ser
+
 export const channelServices = {
   addNewChannelService,
   getAllChannelsService,
+  joinChannelService,
 };

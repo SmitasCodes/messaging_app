@@ -76,9 +76,9 @@ const authStateStatus = () => {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       uid = user.uid;
-      const username = await userDataDispatch(uid);
+      const [username, role, logo] = await userDataDispatch(uid);
 
-      dispatch(authChange({ loggedIn: true, role: "user", username, uid }));
+      dispatch(authChange({ loggedIn: true, role, username, uid, logo }));
 
       // Setting online status
       await updateDoc(doc(db, "users", uid), {
@@ -106,8 +106,8 @@ const userDataDispatch = async (uid) => {
   const userRef = doc(db, `users`, uid);
   const userSnap = await getDoc(userRef);
   const userData = userSnap.data();
-  const { username } = userData;
-  return username;
+  const { username, logo, role } = userData;
+  return [username,role, logo ];
 };
 
 // All functions being put into authServices object and then exported

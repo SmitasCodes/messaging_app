@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../firebase/firebaseSetup";
 import ChannelsSearch from "./ChannelsSearch";
+import ChannelsListMy from "./ChannelsListMy";
 
 const Channelslist = () => {
   const [channels, setChannels] = useState([]);
@@ -24,14 +25,14 @@ const Channelslist = () => {
             const channel = change.doc.data();
             channel.id = change.doc.id;
 
-            if (!loggedIn && channel.accessibility === "private") {
-              return;
-            }
+            // if (!loggedIn && channel.accessibility === "private") {
+            //   return;
+            // }
 
             newChannels.push(channel);
           });
 
-          setChannels([]);
+          setChannels([])
           setChannels((prevChannels) => [...prevChannels, ...newChannels]);
         },
         (error) => {
@@ -59,26 +60,33 @@ const Channelslist = () => {
         (channel) => channel.accessibility !== "private"
       );
       setChannels(updatedChannels);
-    }
+    } 
+
   }, [loggedIn]);
 
   return (
-    <div className="mt-2">
-      <Link to="/">
-        <h2 className="text-lg bg-sky-500 border-2 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
-          Channels
-        </h2>
-      </Link>
+    <div className="mt-2 px-2">
+      {loggedIn ? (
+        <div>
+          <ChannelsListMy />
+          <h2 className="h-10 flex items-center justify-center bg-sky-500">
+            Browse channels
+          </h2>
+        </div>
+      ) : (
+        <div>
+          <Link to="/">
+            <h2 className="text-lg bg-sky-500 border-2 border-sky-900 h-12 flex items-center justify-center max-md:hidden">
+              Channels
+            </h2>
+          </Link>
+          <p className="text-sm text-center my-2 text-slate-600 px-2">
+            Since you are not logged in only public channels are displayed
+          </p>
+        </div>
+      )}
 
       <ChannelsSearch />
-
-      {loggedIn ? (
-        ""
-      ) : (
-        <p className="text-sm text-center my-2 text-slate-600 px-2">
-          Since you are not logged in only public channels are displayed
-        </p>
-      )}
 
       <div className="h-12 flex items-center justify-center bg-sky-500 md:hidden">
         <img
