@@ -14,7 +14,7 @@ const ChannelHeader = () => {
   };
 
   return (
-    <div className="w-full bg-sky-700 h-12 flex align py-2 px-4">
+    <div className="w-full bg-sky-700 h-10 flex align py-2 px-4">
       <ul className="flex w-full items-center">
         <li className="pr-2 border-r-2 border-sky-900">
           {currentChannel.name}

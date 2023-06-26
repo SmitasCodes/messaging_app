@@ -84,8 +84,6 @@ const joinChannelService = async ({ channelID, uid, username, logo }) => {
   // messagesService.createMessagesSubcollection();
 };
 
-// Ser
-
 export const channelServices = {
   addNewChannelService,
   getAllChannelsService,
