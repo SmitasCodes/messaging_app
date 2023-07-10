@@ -1,68 +1,44 @@
 import React, { useEffect, useState } from "react";
-import Channel from "../Channel";
+import Channel from "./Channel";
 import { useDispatch, useSelector } from "react-redux";
 import { updateChannels } from "../../../redux/features/channels/channelsSlice";
 import { Link } from "react-router-dom";
-import { collection, onSnapshot } from "firebase/firestore";
-import db from "../../../firebase/firebaseSetup";
 import ChannelsSearch from "./ChannelsSearch";
 import ChannelsListMy from "./ChannelsListMy";
+import { channelServices } from "../../../services/channels";
 
 const Channelslist = () => {
   const [channels, setChannels] = useState([]);
   const dispatch = useDispatch();
   const { loggedIn } = useSelector((state) => state.auth);
 
-  // Getting all the channels, subscribing to them so then they get added they are shown in real time.
+  // Calling subscribeToChannels service, to get real time updates
   useEffect(() => {
-    const getAllChannels = async () => {
-      const unsubscribe = onSnapshot(
-        collection(db, "channels"),
-        (snapshot) => {
-          const newChannels = [];
+    setChannels([]);
 
-          snapshot.docChanges().forEach((change) => {
-            const channel = change.doc.data();
-            channel.id = change.doc.id;
+    const unsubscribe = channelServices.subscribeToChannelsService(
+      (snapshot) => {
+        const newChannels = [];
 
-            // if (!loggedIn && channel.accessibility === "private") {
-            //   return;
-            // }
+        snapshot.docChanges().forEach((change) => {
+          const channel = change.doc.data();
+          channel.id = change.doc.id;
+          newChannels.push(channel);
+        });
 
-            newChannels.push(channel);
-          });
+        setChannels((prevChannels) => [...prevChannels, ...newChannels]);
+      }
+    );
 
-          setChannels([])
-          setChannels((prevChannels) => [...prevChannels, ...newChannels]);
-        },
-        (error) => {
-          console.log("Error fetching new messages:", error);
-        }
-      );
-
-      return () => {
-        unsubscribe();
-      };
+    return () => {
+      unsubscribe();
     };
-
-    getAllChannels();
   }, []);
 
   // Mapping through channels array and dispatching channels to redux store
   useEffect(() => {
     dispatch(updateChannels(channels));
   }, [channels]);
-
-  // Removing private channels when user logs out
-  useEffect(() => {
-    if (!loggedIn) {
-      let updatedChannels = channels.filter(
-        (channel) => channel.accessibility !== "private"
-      );
-      setChannels(updatedChannels);
-    } 
-
-  }, [loggedIn]);
 
   return (
     <div className="mt-2 px-2">

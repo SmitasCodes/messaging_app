@@ -1,6 +1,8 @@
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   onSnapshot,
   updateDoc,
@@ -16,32 +18,10 @@ const addNewChannelService = async ({ channel_name, accessibility, logo }) => {
     logo,
     users: [],
   });
-
-  // const channelId = channelRef.id;
-
-  // // Update the document with the actual ID
-  // await updateDoc(channelRef, {
-  //   id: channelId,
-  // });
-
-  // console.log("Document written with ID: ", channelRef);
-
-  // Calling out messages service to add messages subcollection
-  // messagesService.createMessagesSubcollection();
 };
 
 // Service for getting all of the channels
 const getAllChannelsService = async () => {
-  // const channelsSnapshot = await getDocs(collection(db, "channels"));
-
-  // const channels = channelsSnapshot.docs.map((doc) => {
-  //   const channel = doc.data();
-  //   channel.id = doc.id;
-  //   return channel;
-  // });
-
-  // return channels;
-
   return new Promise((resolve, reject) => {
     onSnapshot(
       collection(db, `channels`),
@@ -59,33 +39,38 @@ const getAllChannelsService = async () => {
 };
 
 // Service for  joining channel
-const joinChannelService = async ({ channelID, uid, username, logo }) => {
-
-  console.log(channelID, logo)
-  const channelRef = await addDoc(
+const joinChannelService = async ({ channelID, uid }) => {
+  // Adding references to point to a user who is joining a channel
+  const addUserRef = await addDoc(
     collection(db, `channels/${channelID}/users`),
     {
-      uid,
-      username,
-      logo,
+      userRef: doc(db, `users/${uid}`),
     }
   );
 
-  // const channelId = channelRef.id;
-
-  // // Update the document with the actual ID
-  // await updateDoc(channelRef, {
-  //   id: channelId,
-  // });
-
-  // console.log("Document written with ID: ", channelRef);
-
-  // Calling out messages service to add messages subcollection
-  // messagesService.createMessagesSubcollection();
+  // Adding channels reference to users/channels subcollection.
+  const addChannelRef = await addDoc(collection(db, `users/${uid}/channels/`), {
+    channelRef: doc(db, `channels/${channelID}`),
+  });
 };
+
+// Service for channels subscribtion, to update channels in real time
+export const subscribeToChannelsService = (callback) => {
+  return onSnapshot(collection(db, "channels"), callback);
+};
+
+// Service for channels users subscribtion, users in a channel are updated in real time
+export const subscribeToUsersService = (channelId,callback) => {
+  return onSnapshot(collection(db, `channels/${channelId}/users`), callback);
+};
+
+// Service for outputting all joined channels
+// const getAllJoinedChannels = async ({ uid }) => {};
 
 export const channelServices = {
   addNewChannelService,
   getAllChannelsService,
   joinChannelService,
+  subscribeToChannelsService,
+  subscribeToUsersService,
 };

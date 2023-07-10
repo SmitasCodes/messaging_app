@@ -3,38 +3,32 @@ import { useSelector } from "react-redux";
 import ChannelMessage from "./ChannelMessage";
 import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../firebase/firebaseSetup";
+import { messagesService } from "../../../services/messages";
 
 const ChannelMessages = () => {
   const { currentChannel } = useSelector((state) => state.channels);
   const [messages, setMessages] = useState([]);
 
-  // Getting all the messages of a channel once channel changes / loads and subscribing to them, making them appear in real time.
+  // Calling subscribe to messages service and updating to them in real time
   useEffect(() => {
     setMessages([]);
 
-    const getMessages = async () => {
-      const unsubscribe = onSnapshot(
-        collection(db, `channels/${currentChannel.id}/messages`),
-        (snapshot) => {
-          const newMessageArray = snapshot.docChanges().map((change) => {
-            const message = change.doc.data();
-            message.id = change.doc.id;
-            return message;
-          });
+    const unsubscribe = messagesService.subscribeToMessagesService(
+      currentChannel.id,
+      (snapshot) => {
+        const newMessageArray = snapshot.docChanges().map((change) => {
+          const message = change.doc.data();
+          message.id = change.doc.id;
+          return message;
+        });
 
-          setMessages((prevMessages) => [...prevMessages, ...newMessageArray]);
-        },
-        (error) => {
-          console.log("Error fetching new messages:", error);
-        }
-      );
+        setMessages((prevMessages) => [...prevMessages, ...newMessageArray]);
+      }
+    );
 
-      return () => {
-        unsubscribe();
-      };
+    return () => {
+      unsubscribe();
     };
-
-    getMessages();
   }, [currentChannel]);
 
   return (

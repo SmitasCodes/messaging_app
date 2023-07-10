@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { authChange } from "../redux/features/auth/authSlice";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 const auth = getAuth();
@@ -41,7 +41,6 @@ const signUpService = ({
             email,
             lastTimeActive: true,
             role: "user",
-            channels: [],
           };
           const userRef = doc(db, "users", uid);
           await setDoc(userRef, user);
@@ -107,7 +106,7 @@ const userDataDispatch = async (uid) => {
   const userSnap = await getDoc(userRef);
   const userData = userSnap.data();
   const { username, logo, role } = userData;
-  return [username,role, logo ];
+  return [username, role, logo];
 };
 
 // All functions being put into authServices object and then exported

@@ -33,12 +33,15 @@ const getMessagesService = async (channelID) => {
   });
 
   return messages;
-
 };
 
-
+// Service for messages subscribtion, to update messages in real time
+export const subscribeToMessagesService = (channelId,callback) => {
+  return onSnapshot(collection(db, `channels/${channelId}/messages`), callback);
+};
 
 export const messagesService = {
   addMessageService,
   getMessagesService,
+  subscribeToMessagesService,
 };

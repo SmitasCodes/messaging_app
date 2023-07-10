@@ -1,38 +1,34 @@
-import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { channelServices } from "../../../services/channels";
+import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../firebase/firebaseSetup";
 
 const ChannelUsers = () => {
   const [users, setUsers] = useState([]);
   const { currentChannel } = useSelector((state) => state.channels);
 
+  // Calling subscribe to users service and updating them in real time
   useEffect(() => {
-    const getUsers = async () => {
-      const unsubscribe = onSnapshot(
-        collection(db, `channels/${currentChannel.id}/users`),
-        (snapshot) => {
-          const newUsers = snapshot.docChanges().map((change) => {
-            console.log(change);
-            const user = change.doc.data();
-            user.id = change.doc.id;
-            return user;
-          });
+    setUsers([]);
 
-          setUsers([]);
-          setUsers((prevUsers) => [...prevUsers, ...newUsers]);
-        },
-        (error) => {
-          console.log("Error fetching new messages:", error);
-        }
-      );
+    const unsubscribe = channelServices.subscribeToUsersService(
+      currentChannel.id,
 
-      return () => {
-        unsubscribe();
-      };
+      (snapshot) => {
+        const newUsers = snapshot.docChanges().map((change) => {
+          const user = change.doc.data();
+          user.id = change.doc.id;
+          return user;
+        });
+
+        setUsers((prevUsers) => [...prevUsers, ...newUsers]);
+      }
+    );
+
+    return () => {
+      unsubscribe();
     };
-
-    getUsers();
   }, [currentChannel]);
 
   return (
@@ -41,13 +37,15 @@ const ChannelUsers = () => {
         Users
       </h2>
       {users.length == 0 ? (
-        <p className="text-sm text-center my-2 text-slate-600 px-2">No users in this channel</p>
+        <p className="text-sm text-center my-2 text-slate-600 px-2">
+          No users in this channel
+        </p>
       ) : (
         users.map((user) => {
           return (
             <li
               className="md:bg-sky-500 flex justify-between items-center min-h-fit py-1 px-2 max-sm:px-1 my-1 rounded-md md:hover:bg-sky-600 md:border-2 md:border-sky-600 transition cursor-pointer"
-              key={user.name}
+              key={user.uid}
             >
               <h3>{user.username}</h3>
               <img
@@ -59,6 +57,7 @@ const ChannelUsers = () => {
                 alt={user.logo}
                 className="h-8 w-8 max-md:w-12 max-md:h-12 max-sm:w-10 max-sm:h-10 rounded-full bg-white"
               />
+              <span className="bg-slate-300 w-4 h-4 rounded-full border-2 border-slate-700 "></span>
             </li>
           );
         })
