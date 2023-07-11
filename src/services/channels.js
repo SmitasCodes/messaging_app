@@ -59,9 +59,16 @@ export const subscribeToChannelsService = (callback) => {
   return onSnapshot(collection(db, "channels"), callback);
 };
 
-// Service for channels users subscribtion, users in a channel are updated in real time
-export const subscribeToUsersService = (channelId,callback) => {
+// Service to get all the paths to joined users in a channel in real time
+export const subscribeToUsersService = (channelId, callback) => {
   return onSnapshot(collection(db, `channels/${channelId}/users`), callback);
+};
+
+// Service for getting data from a user path
+export const getUserData = async (userPath) => {
+  const userSnapshot = await getDoc(doc(db, userPath));
+  const user = userSnapshot.data();
+  return user;
 };
 
 // Service for outputting all joined channels
@@ -73,4 +80,5 @@ export const channelServices = {
   joinChannelService,
   subscribeToChannelsService,
   subscribeToUsersService,
+  getUserData,
 };

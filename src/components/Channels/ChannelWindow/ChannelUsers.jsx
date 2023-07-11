@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { channelServices } from "../../../services/channels";
 import { collection, onSnapshot } from "firebase/firestore";
 import db from "../../../firebase/firebaseSetup";
+import { v4 as uuid } from "uuid";
 
 const ChannelUsers = () => {
   const [users, setUsers] = useState([]);
@@ -16,13 +17,22 @@ const ChannelUsers = () => {
       currentChannel.id,
 
       (snapshot) => {
-        const newUsers = snapshot.docChanges().map((change) => {
-          const user = change.doc.data();
-          user.id = change.doc.id;
+        const usersPaths = snapshot.docChanges().map((change) => {
+          let user = change.doc.data().userRef.path;
           return user;
         });
 
-        setUsers((prevUsers) => [...prevUsers, ...newUsers]);
+        const userDataHandler = async () => {
+          const newUsers = [];
+          for (let user in usersPaths) {
+            const newUser = await channelServices.getUserData(usersPaths[user]);
+            newUsers.push(newUser);
+          }
+
+          setUsers((prevUsers) => [...prevUsers, ...newUsers]);
+        };
+
+        userDataHandler();
       }
     );
 
@@ -45,7 +55,7 @@ const ChannelUsers = () => {
           return (
             <li
               className="md:bg-sky-500 flex justify-between items-center min-h-fit py-1 px-2 max-sm:px-1 my-1 rounded-md md:hover:bg-sky-600 md:border-2 md:border-sky-600 transition cursor-pointer"
-              key={user.uid}
+              key={uuid()}
             >
               <h3>{user.username}</h3>
               <img

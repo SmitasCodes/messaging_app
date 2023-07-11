@@ -5,7 +5,7 @@ import { messagesService } from "../../../services/messages";
 // Posting messages to channel
 const ChannelForm = () => {
   const { username } = useSelector((state) => state.auth);
-  const { currentChannelID } = useSelector((state) => state.channels);
+  const { currentChannel } = useSelector((state) => state.channels);
 
   const messageInput = useRef(null);
 
@@ -24,7 +24,7 @@ const ChannelForm = () => {
       content,
     };
 
-    messagesService.addMessageService(currentChannelID, messageData);
+    messagesService.addMessageService(currentChannel.id, messageData);
 
     messageInput.current.value = "";
   };
